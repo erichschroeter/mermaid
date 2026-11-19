@@ -24,6 +24,13 @@ width/height controls relate to orientation-neutral controls; do not reinterpret
 literal widths as heights. Automatic text shrinking and strict proportional
 section sizes are not the chosen overflow policy.
 
+Use
+[Choose scrolling and export ownership](03-scrolling-and-export.md)
+to specify the per-diagram YAML frontmatter placement and validation for
+intrinsic versus responsive SVG sizing, following the `useMaxWidth` convention.
+Keep this output-sizing control separate from section length and lane sizing.
+Do not introduce a diagram-owned scrollable viewport.
+
 Cover styling for containing sections and children, whether styles inherit,
 and how overrides work. Text and notes do not automatically propagate from
 parents to children; decide presentation for notes explicitly attached to a
@@ -45,3 +52,4 @@ changes.
 ## Blocked by
 
 - [Choose layout and sizing in both orientations](02-layout-and-sizing.md)
+- [Choose scrolling and export ownership](03-scrolling-and-export.md)

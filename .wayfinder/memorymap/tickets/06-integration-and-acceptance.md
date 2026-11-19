@@ -38,6 +38,15 @@ unbroken text and nesting that requires additional space. External-reference
 checks depend on the syntax and interaction decision, not an assumed link
 capability.
 
+Derive sizing and embedding checks from
+[Choose scrolling and export ownership](03-scrolling-and-export.md).
+Cover default intrinsic dimensions and configurable responsive fitting in both
+orientations, full padded SVG bounds, and overflow on either axis. Specify a
+host-owned scroll-container example and verify that SVG output is independent
+of the host's currently visible viewport. Distinguish renderer guarantees from
+external viewer/exporter fitting, raster sizing, and pagination; do not promise
+unverified behavior across third-party tools.
+
 Determine whether any remaining choice prevents implementation without
 guesswork. Surface that choice as a new decision ticket rather than using this
 ticket to deliver the implementation or duplicate earlier resolutions. The

@@ -18,7 +18,7 @@ section styling, and wrapping notes. No diagram implementation is included.
 - [Boot memory map proposal](examples/boot-memory-map.mmd) is the user-supplied
   acceptance scenario, not an accepted grammar or configuration schema.
   Its syntax and percentage-based widths are proposals.
-- Viewport ownership, configuration shape, and exact syntax remain open.
+- Configuration shape and exact syntax remain open.
 - Consult the `wayfinder`, `grilling`, and `domain-modeling` skills each session.
   All initial tickets are human-in-the-loop conversations.
 - Use the [memory map glossary](../../GLOSSARY.md) for confirmed terminology.
@@ -57,6 +57,9 @@ section styling, and wrapping notes. No diagram implementation is included.
 - [Choose layout and sizing in both orientations](tickets/02-layout-and-sizing.md):
   transposed local lanes and nested boxes use content-driven sizing; explicit
   lengths are minimums, and wrapped notes may grow sections.
+- [Choose scrolling and export ownership](tickets/03-scrolling-and-export.md):
+  hosts own scrolling; complete SVG output defaults to intrinsic size with
+  configurable responsive fitting.
 
 ## Not yet specified
 
