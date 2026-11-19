@@ -311,6 +311,8 @@ const config: RequiredDeep<MermaidConfig> = {
       fontFamily: undefined,
       fontSize: undefined,
       fontWeight: 'normal',
+      textAlign: 'left',
+      verticalAlign: 'top',
     },
     sectionStyle: {
       fill: undefined,
@@ -321,12 +323,16 @@ const config: RequiredDeep<MermaidConfig> = {
       fontFamily: undefined,
       fontSize: undefined,
       fontWeight: 'normal',
+      textAlign: 'left',
+      verticalAlign: 'top',
     },
     noteStyle: {
       color: undefined,
       fontFamily: undefined,
       fontSize: undefined,
       fontWeight: 'normal',
+      textAlign: 'left',
+      verticalAlign: 'top',
     },
   },
   railroad: {

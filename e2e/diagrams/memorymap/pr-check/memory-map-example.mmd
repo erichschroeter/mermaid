@@ -1,0 +1,75 @@
+---
+config:
+    theme: base
+    memorymap:
+        crossSize: 360
+        wrapWidth: 160
+        padding: 0
+        laneShares: { label: 23, section: 27, note: 50 }
+        groupStyle:
+            color: '#000000'
+            fontFamily: Arial
+            fontSize: 11
+            strokeWidth: 0
+            textAlign: right
+        sectionStyle:
+            fill: '#F4CCCC'
+            stroke: '#555555'
+            strokeWidth: 1
+            color: '#000000'
+            fontFamily: Arial
+            fontSize: 11
+            minLength: 27
+            textAlign: center
+            verticalAlign: middle
+        noteStyle:
+            color: '#000000'
+            fontFamily: Arial
+            fontSize: 11
+            textAlign: center
+            verticalAlign: middle
+---
+memorymap-beta vertical
+    accTitle: Flash memory layout
+    accDescr: Pink regions are reserved. Four XLDR copies precede EBOOT, BOOTCFG, the splash bitmap, Main NK, Safe NK, and the unreserved MBR.
+
+    %% Lengths approximate the drawing, not the numeric address intervals.
+    group "0x00000000"
+        section "XLDR\nCopy 0"
+        section "XLDR\nCopy 1"
+        section "XLDR\nCopy 2"
+        section "XLDR\nCopy 3"
+        note "Boot ROM requires there to be 4 copies on XLDR in each of the 1st 4 blocks"
+
+    group "0x00080000"
+        section "EBOOT"
+            style "min-length:100"
+        %% A solid border approximates the dotted BOOTCFG strip.
+        section "BOOTCFG"
+            style "min-length:16; font-size:10"
+        note "256K reserved for EBOOT. Unused portion is filled with 0xFF"
+
+    group "0x000C0000"
+        section "Splash Screen\nBitmap"
+            style "min-length:154"
+        note "Must be multiple of 128K and must be big enough to fit largest splash screen image for all printers"
+
+    group "0x004C0000"
+        section "Main NK"
+            style "min-length:216"
+        note "80MB reserved for mainNK"
+
+    group "0x054C0000"
+        section "Safe NK"
+            style "min-length:216"
+        note "80MB reserved for mainNK"
+
+    group "0x0A4C0000"
+        section "MBR"
+            style "fill:#FFFFFF"
+        note "MBR is 1 block - Formatting flash from bootloader searches for 1st unreserved block"
+
+    %% Boundary annotation only; the invisible section adds no named region.
+    group "0x0A4E0000"
+        section
+            style "fill:none; stroke:none; stroke-width:0; min-length:1"

@@ -3,6 +3,8 @@ export interface TextStyle {
   fontFamily?: string;
   fontSize?: number;
   fontWeight?: string | number;
+  textAlign?: 'left' | 'center' | 'right';
+  verticalAlign?: 'top' | 'middle' | 'bottom';
 }
 
 export interface MemoryStyle extends TextStyle {

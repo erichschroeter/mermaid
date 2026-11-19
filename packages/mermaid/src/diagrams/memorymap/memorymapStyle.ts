@@ -1,5 +1,5 @@
 import DEFAULT_CONFIG, { configKeys } from '../../defaultConfig.js';
-import type { MemoryConfig, MemoryStyle } from './memorymapTypes.js';
+import type { MemoryConfig, MemoryStyle, TextStyle } from './memorymapTypes.js';
 
 type Target = 'group' | 'section' | 'note';
 
@@ -11,6 +11,8 @@ const sourceNames: Record<string, keyof MemoryStyle> = {
   'font-family': 'fontFamily',
   'font-size': 'fontSize',
   'font-weight': 'fontWeight',
+  'text-align': 'textAlign',
+  'vertical-align': 'verticalAlign',
   'min-length': 'minLength',
 };
 
@@ -42,6 +44,16 @@ const property = (key: string, value: unknown, target: Target, path: string): Me
     throw new Error(`${path} (${String(value)}) is not allowed on ${target}`);
   }
   switch (key) {
+    case 'textAlign':
+      if (value !== 'left' && value !== 'center' && value !== 'right') {
+        throw new Error(`${path} (${String(value)}) must be left, center or right`);
+      }
+      return { textAlign: value };
+    case 'verticalAlign':
+      if (value !== 'top' && value !== 'middle' && value !== 'bottom') {
+        throw new Error(`${path} (${String(value)}) must be top, middle or bottom`);
+      }
+      return { verticalAlign: value };
     case 'fill':
     case 'stroke':
     case 'color':
@@ -157,11 +169,13 @@ export const resolveMemoryConfig = (input: unknown): MemoryConfig => {
     typeof theme.fontSize === 'string' ? Number(theme.fontSize.replace(/px$/, '')) : theme.fontSize,
     'themeVariables.fontSize'
   );
-  const text = {
+  const text: Required<TextStyle> = {
     color: theme.primaryTextColor as string,
     fontFamily: (global.fontFamily ?? theme.fontFamily) as string,
     fontSize,
     fontWeight: 'normal',
+    textAlign: 'left',
+    verticalAlign: 'top',
   };
   const shares =
     config.laneShares === undefined ? {} : record(config.laneShares, 'memorymap.laneShares');

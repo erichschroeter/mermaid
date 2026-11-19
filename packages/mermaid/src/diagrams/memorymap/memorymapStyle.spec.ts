@@ -39,6 +39,10 @@ describe('memorymap styles', () => {
     'font-family:url(font)',
     'font-family:Arial,,serif',
     'font-family:"Open Sans"',
+    'text-align:justify',
+    'text-align:Center',
+    'vertical-align:center',
+    'text-align:left; text-align:right',
   ])('rejects unsafe or invalid source style %j', (payload) => {
     expect(() => parseStyle(payload, 'section')).toThrow();
   });
@@ -47,6 +51,13 @@ describe('memorymap styles', () => {
     expect(() => parseStyle('min-length:10', 'group')).toThrow(/min-length|section/);
     expect(() => parseStyle('fill:#fff', 'note')).toThrow(/fill|note/);
     expect(() => parseStyle('stroke-width:1', 'note')).toThrow(/strokeWidth|note/);
+  });
+
+  it.each(['group', 'section', 'note'] as const)('accepts text alignment on %s', (target) => {
+    expect(parseStyle('text-align:center; vertical-align:middle', target)).toEqual({
+      textAlign: 'center',
+      verticalAlign: 'middle',
+    });
   });
 
   it('merges diagram defaults field-wise over theme defaults', () => {
@@ -91,6 +102,9 @@ describe('memorymap styles', () => {
     { noteStyle: { stroke: '#fff' } },
     { groupStyle: { minLength: 12 } },
     { sectionStyle: null },
+    { sectionStyle: { textAlign: 'justify' } },
+    { noteStyle: { verticalAlign: null } },
+    { groupStyle: { verticalAlign: 'center' } },
   ])('validates runtime configuration %j', (memorymap) => {
     // Exercise untrusted YAML values, independently of generated compile-time types.
     expect(() => resolveMemoryConfig({ memorymap })).toThrow(/memorymap/);

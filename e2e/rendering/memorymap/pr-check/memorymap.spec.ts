@@ -26,6 +26,67 @@ for (const name of readdirSync(fixtures)
 }
 
 for (const orientation of ['vertical', 'horizontal'] as const) {
+  test(`text alignment in section boxes: ${orientation}`, async ({ page }, testInfo) => {
+    const alignments = [
+      ['left', 'top'],
+      ['center', 'middle'],
+      ['right', 'bottom'],
+    ];
+    const source = [
+      `memorymap-beta ${orientation}`,
+      'group "Alignment"',
+      ...alignments.flatMap(([horizontal, vertical]) => [
+        ' section "WIDE\\ni\\nA longer line that automatically wraps into shorter lines"',
+        `  style "text-align:${horizontal}; vertical-align:${vertical}; min-length:300"`,
+        '  label "Entry"',
+        '  note "Independent note"',
+        `  noteStyle "text-align:${horizontal}; vertical-align:${vertical}"`,
+      ]),
+    ].join('\n');
+    await renderGraph(page, testInfo, source, {
+      screenshot: false,
+      memorymap: { crossSize: 900, sectionStyle: { fontFamily: 'monospace' } },
+    });
+    const positions = await diagramSvg(page).evaluate((svg) =>
+      [...svg.querySelectorAll<SVGGElement>('.memorymap-section')].map((section) => {
+        const rect = section.querySelector<SVGRectElement>('.memorymap-box')!;
+        const text = section.querySelector<SVGTextElement>('.memorymap-content')!;
+        const bounds = rect.getBBox();
+        const inset = Number.parseFloat(getComputedStyle(rect).strokeWidth) / 2 + 8;
+        const content = text.getBBox();
+        return {
+          left: bounds.x + inset,
+          top: bounds.y + inset,
+          width: bounds.width - 2 * inset,
+          height: bounds.height - 2 * inset,
+          content: { y: content.y, height: content.height },
+          lines: [...text.querySelectorAll('tspan')].map((line) => {
+            const box = line.getBBox();
+            return { x: box.x, width: box.width };
+          }),
+        };
+      })
+    );
+    expect(positions).toHaveLength(3);
+    for (const [index, position] of positions.entries()) {
+      const fraction = index / 2;
+      expect(position.lines.length).toBeGreaterThan(3);
+      for (const line of position.lines) {
+        expect(
+          Math.abs(line.x - (position.left + (position.width - line.width) * fraction))
+        ).toBeLessThan(2);
+      }
+      expect(
+        Math.abs(
+          position.content.y -
+            (position.top + (position.height - position.content.height) * fraction)
+        )
+      ).toBeLessThan(5);
+    }
+    await expectCompleteBounds(page);
+    await expectContainedSections(page);
+  });
+
   test(`source order, owner-only styles, and host scrolling: ${orientation}`, async ({
     page,
   }, testInfo) => {

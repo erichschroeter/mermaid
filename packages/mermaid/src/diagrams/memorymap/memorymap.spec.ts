@@ -48,9 +48,9 @@ config:
     padding: 12
     useMaxWidth: true
     laneShares: {label: 1, section: 2, note: 3}
-    groupStyle: {fill: '#fff', stroke: '#abc', strokeWidth: 3}
-    sectionStyle: {minLength: 140, strokeWidth: 4, fontFamily: 'Arial, serif', fontSize: 18}
-    noteStyle: {color: '#456', fontSize: 11, fontFamily: serif, fontWeight: bold}
+    groupStyle: {fill: '#fff', stroke: '#abc', strokeWidth: 3, textAlign: right, verticalAlign: bottom}
+    sectionStyle: {minLength: 140, strokeWidth: 4, fontFamily: 'Arial, serif', fontSize: 18, textAlign: center, verticalAlign: middle}
+    noteStyle: {color: '#456', fontSize: 11, fontFamily: serif, fontWeight: bold, textAlign: right, verticalAlign: bottom}
 ---
 memorymap-beta
 group "A"
@@ -61,7 +61,13 @@ group "A"
       padding: 12,
       useMaxWidth: true,
       laneShares: { label: 1, section: 2, note: 3 },
-      groupStyle: { fill: '#fff', stroke: '#abc', strokeWidth: 3 },
+      groupStyle: {
+        fill: '#fff',
+        stroke: '#abc',
+        strokeWidth: 3,
+        textAlign: 'right',
+        verticalAlign: 'bottom',
+      },
       sectionStyle: {
         fill: '#abc',
         color: '#123',
@@ -70,8 +76,17 @@ group "A"
         strokeWidth: 4,
         fontFamily: 'Arial, serif',
         fontSize: 18,
+        textAlign: 'center',
+        verticalAlign: 'middle',
       },
-      noteStyle: { color: '#456', fontSize: 11, fontFamily: 'serif', fontWeight: 'bold' },
+      noteStyle: {
+        color: '#456',
+        fontSize: 11,
+        fontFamily: 'serif',
+        fontWeight: 'bold',
+        textAlign: 'right',
+        verticalAlign: 'bottom',
+      },
     });
   });
 

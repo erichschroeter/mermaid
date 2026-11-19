@@ -105,6 +105,25 @@ export const wrapText = (
   };
 };
 
+export const alignmentOffset = (
+  alignment: TextStyle['textAlign'] | TextStyle['verticalAlign'],
+  space: number
+): number => {
+  const remaining = Math.max(0, space);
+  return alignment === 'center' || alignment === 'middle'
+    ? remaining / 2
+    : alignment === 'right' || alignment === 'bottom'
+      ? remaining
+      : 0;
+};
+
+const positionText = (block: TextBlock | undefined, area: Rect): void => {
+  if (block) {
+    block.x = area.x + alignmentOffset(block.style.textAlign, area.width - block.width);
+    block.y = area.y + alignmentOffset(block.style.verticalAlign, area.height - block.height);
+  }
+};
+
 export const layoutMemoryMap = (
   model: MemoryMap,
   config: MemoryConfig,
@@ -122,9 +141,13 @@ export const layoutMemoryMap = (
   const result: MemoryLayout = siblings(model.groups, config.crossSize);
   if (diagramTitle) {
     result.title = wrapText(diagramTitle, config.wrapWidth, config.groupStyle, measure);
-    result.title.x = gap;
-    result.title.y = gap;
     result.width = Math.max(result.width, result.title.width);
+    positionText(result.title, {
+      x: gap,
+      y: gap,
+      width: result.width,
+      height: result.title.height,
+    });
     result.height += result.title.height + gap;
   }
   for (const node of result.nodes) {
@@ -205,13 +228,33 @@ export const layoutMemoryMap = (
           block ? (vertical ? block.height : block.width) + 2 * gap : 0
         )
       );
-      if (label) {
-        label.x = gap;
-        label.y = gap;
-      }
-      if (note) {
-        note.x = vertical ? noteOffset + gap : gap;
-        note.y = vertical ? gap : noteOffset + gap;
+      positionText(label, {
+        x: gap,
+        y: gap,
+        width: (vertical ? labelSize : length) - 2 * gap,
+        height: (vertical ? length : labelSize) - 2 * gap,
+      });
+      positionText(note, {
+        x: vertical ? noteOffset + gap : gap,
+        y: vertical ? gap : noteOffset + gap,
+        width: (vertical ? noteSize : length) - 2 * gap,
+        height: (vertical ? length : noteSize) - 2 * gap,
+      });
+      const bounds = {
+        x: vertical ? bodyOffset : 0,
+        y: vertical ? 0 : bodyOffset,
+        width: vertical ? sectionSize : length,
+        height: vertical ? length : sectionSize,
+      };
+      if (item.content) {
+        const inset = gap + styles.get(node)!.strokeWidth;
+        positionText(item.content, {
+          x: inset,
+          y: inset,
+          width: bounds.width - 2 * inset,
+          // A parent's own text stays in its header, never over its children.
+          height: node.children.length ? item.content.height : bounds.height - 2 * inset,
+        });
       }
       const placedNode: PlacedNode = {
         ...item,
@@ -221,12 +264,7 @@ export const layoutMemoryMap = (
         y: vertical ? cursor : 0,
         width: vertical ? cross : length,
         height: vertical ? length : cross,
-        box: {
-          x: vertical ? bodyOffset : 0,
-          y: vertical ? 0 : bodyOffset,
-          width: vertical ? sectionSize : length,
-          height: vertical ? length : sectionSize,
-        },
+        box: bounds,
         label,
         note,
       };
@@ -254,10 +292,6 @@ export const layoutMemoryMap = (
       node.children,
       Math.max(0, available - 2 * inset - (vertical ? 0 : header))
     );
-    if (content) {
-      content.x = inset;
-      content.y = inset;
-    }
     for (const child of children.nodes) {
       child.x += inset;
       child.y += inset + header;

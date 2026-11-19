@@ -3,7 +3,7 @@ import type { Selection } from 'd3';
 import { configureSvgSize } from '../../setupGraphViewbox.js';
 import { selectSvgElement } from '../../rendering-util/selectSvgElement.js';
 import { db } from './memorymapDb.js';
-import { layoutMemoryMap } from './memorymapLayout.js';
+import { alignmentOffset, layoutMemoryMap } from './memorymapLayout.js';
 import type { MeasureText, PlacedNode, TextBlock, TextMetrics } from './memorymapLayout.js';
 import type { TextStyle } from './memorymapTypes.js';
 
@@ -30,7 +30,12 @@ const drawText = (parent: SVGGroup, block: TextBlock | undefined, className: str
   block.lines.forEach((line, index) => {
     text
       .append('tspan')
-      .attr('x', block.x + block.metrics[index].left)
+      .attr(
+        'x',
+        block.x +
+          block.metrics[index].left +
+          alignmentOffset(block.style.textAlign, block.width - block.metrics[index].width)
+      )
       .attr('y', block.y + block.baseline + index * block.lineHeight)
       .text(line);
   });

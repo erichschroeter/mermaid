@@ -3121,6 +3121,16 @@ $defs: # JSON Schema definition (maybe we should move these to a separate file)
             enum: [normal, bold]
           - type: integer
             enum: [100, 200, 300, 400, 500, 600, 700, 800, 900]
+      textAlign:
+        description: Horizontal alignment of text within its box or lane.
+        type: string
+        enum: [left, center, right]
+        default: left
+      verticalAlign:
+        description: Vertical alignment within a leaf box or lane; parent headers stay above children.
+        type: string
+        enum: [top, middle, bottom]
+        default: top
 
   MemorymapBoxStyle:
     title: Memorymap Box Style

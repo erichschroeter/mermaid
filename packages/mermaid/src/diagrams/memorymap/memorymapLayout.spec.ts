@@ -43,7 +43,7 @@ group "A"
       const source = `memorymap-beta ${orientation}
 group "A"
   section "Parent"
-    style "fill:#f00; color:#f00; font-size:30; min-length:1000"
+    style "fill:#f00; color:#f00; font-size:30; min-length:1000; text-align:center; vertical-align:bottom"
     note "Independent note"
     section "Child"
       note "Child note"
@@ -56,6 +56,8 @@ group "A"
       expect(child.y + child.height).toBeLessThanOrEqual(parent.box.height);
       expect(child.style.fill).toBe(config.sectionStyle.fill);
       expect(child.style.fontSize).toBe(config.sectionStyle.fontSize);
+      expect(child.style.textAlign).toBe('left');
+      expect(parent.content!.y).toBe(config.padding + parent.style.strokeWidth);
       expect(parent.note!.style.color).toBe(config.noteStyle.color);
       expect(blank.content).toBeUndefined();
       if (orientation === 'vertical') {
@@ -67,6 +69,65 @@ group "A"
       }
     }
   );
+
+  for (const orientation of ['vertical', 'horizontal']) {
+    it.each([
+      ['left', 'top', 0],
+      ['center', 'middle', 0.5],
+      ['right', 'bottom', 1],
+    ] as const)(
+      `places %s/%s text in the final ${orientation} box`,
+      (horizontal, vertical, fraction) => {
+        const source = `memorymap-beta ${orientation}
+group "A"
+ section "Wide\\nI"
+  style "text-align:${horizontal}; vertical-align:${vertical}; min-length:400"
+  label "Entry"
+  note "Note"
+  noteStyle "text-align:${horizontal}; vertical-align:${vertical}"
+ section "A wider neighboring section"`;
+        const item = layoutMemoryMap(parseMemoryMap(source), config, measure).nodes[0].children[0];
+        const inset = config.padding + item.style.strokeWidth;
+        const content = item.content!;
+        expect(content.x).toBeCloseTo(
+          inset + (item.box.width - 2 * inset - content.width) * fraction
+        );
+        expect(content.y).toBeCloseTo(
+          inset + (item.box.height - 2 * inset - content.height) * fraction
+        );
+        const label = item.label!;
+        const note = item.note!;
+        if (orientation === 'vertical') {
+          expect(label.y).toBeCloseTo(
+            config.padding + (item.height - 2 * config.padding - label.height) * fraction
+          );
+          expect(note.y).toBeCloseTo(
+            config.padding + (item.height - 2 * config.padding - note.height) * fraction
+          );
+        } else {
+          expect(label.x).toBeCloseTo(
+            config.padding + (item.width - 2 * config.padding - label.width) * fraction
+          );
+          expect(note.x).toBeCloseTo(
+            config.padding + (item.width - 2 * config.padding - note.width) * fraction
+          );
+        }
+      }
+    );
+  }
+
+  it('aligns leaf text after a tall note grows its owner', () => {
+    const source = `memorymap-beta
+group "A"
+ section "Body"
+  style "min-length:20; vertical-align:bottom"
+  note "${'Long note. '.repeat(60)}"`;
+    const item = layoutMemoryMap(parseMemoryMap(source), config, measure).nodes[0].children[0];
+    expect(item.box.height).toBeGreaterThan(80);
+    expect(item.content!.y + item.content!.height).toBeCloseTo(
+      item.box.height - config.padding - item.style.strokeWidth
+    );
+  });
 
   it('keeps geometry when borders are hidden or responsive fitting is enabled', () => {
     const source = 'memorymap-beta\ngroup "A"\n section "Body"';

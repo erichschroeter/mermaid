@@ -88,6 +88,43 @@
     "method": "Read-only code-review agent over the complete implementation and shared integration changes.",
     "result": "No substantive findings."
   },
+  "alignmentFollowup": {
+    "sourceStyles": {
+      "text-align": ["left", "center", "right"],
+      "vertical-align": ["top", "middle", "bottom"]
+    },
+    "yamlStyles": ["textAlign", "verticalAlign"],
+    "defaults": "left/top, independently configurable for groups, sections, and notes",
+    "semantics": "Screen-relative placement without changes to wrapping or geometry. Parent content stays in its top header above children.",
+    "checks": [
+      {
+        "command": "pnpm exec vitest run packages/mermaid/src/diagrams/memorymap --maxWorkers=2",
+        "result": "100 tests passed"
+      },
+      {
+        "command": "pnpm test --maxWorkers=2",
+        "result": "Lint and formatting passed; 8562 tests passed, 16 skipped, 2 todo"
+      },
+      {
+        "command": "MERMAID_PORT=9000 MERMAID_E2E_FIXTURE_TIER=pr-check pnpm e2e e2e/rendering/mmd-snapshots.spec.ts e2e/rendering/memorymap --grep memorymap --workers=2",
+        "result": "32 tests passed, including unchanged existing snapshots, actual per-line alignment in both orientations, and both scale cases"
+      },
+      {
+        "command": "pnpm build",
+        "result": "passed; log checked for TypeScript errors"
+      },
+      {
+        "command": "pnpm exec tsc --noEmit -p packages/mermaid/tsconfig.json",
+        "result": "passed"
+      },
+      {
+        "command": "pnpm test:check:tsc",
+        "result": "passed"
+      }
+    ],
+    "visualReview": "Copilot reviewed the centered memory-map-example fixture against the supplied reference image, using the browser/font environment above. The new local snapshot was compared successfully afterward.",
+    "review": "Read-only code-review agent found no substantive issues."
+  },
   "limitations": [
     "Entry labels are literal text; no memory address, capacity, range, or allocation calculations.",
     "The host owns scrolling and zoom; export pagination and external font availability are outside diagram guarantees.",

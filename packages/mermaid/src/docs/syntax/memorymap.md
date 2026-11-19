@@ -130,16 +130,18 @@ space, not a fresh `crossSize`. Adjacent sibling sections abut; groups have padd
 
 Source styles use kebab-case; YAML style objects use camelCase:
 
-| Source property | YAML key      | Target                                                        |
-| --------------- | ------------- | ------------------------------------------------------------- |
-| `fill`          | `fill`        | Group/section box only.                                       |
-| `stroke`        | `stroke`      | Group/section border.                                         |
-| `stroke-width`  | `strokeWidth` | Group/section border width.                                   |
-| `color`         | `color`       | Owner text and entry label, or note text in `noteStyle`.      |
-| `font-family`   | `fontFamily`  | Own text, entry label, or independent note text.              |
-| `font-size`     | `fontSize`    | Own text, entry label, or independent note text.              |
-| `font-weight`   | `fontWeight`  | Own text, entry label, or independent note text.              |
-| `min-length`    | `minLength`   | Section-only minimum height vertically or width horizontally. |
+| Source property  | YAML key        | Target                                                          |
+| ---------------- | --------------- | --------------------------------------------------------------- |
+| `fill`           | `fill`          | Group/section box only.                                         |
+| `stroke`         | `stroke`        | Group/section border.                                           |
+| `stroke-width`   | `strokeWidth`   | Group/section border width.                                     |
+| `color`          | `color`         | Owner text and entry label, or note text in `noteStyle`.        |
+| `font-family`    | `fontFamily`    | Own text, entry label, or independent note text.                |
+| `font-size`      | `fontSize`      | Own text, entry label, or independent note text.                |
+| `font-weight`    | `fontWeight`    | Own text, entry label, or independent note text.                |
+| `text-align`     | `textAlign`     | Horizontal text alignment: `left` (default), `center`, `right`. |
+| `vertical-align` | `verticalAlign` | Vertical text alignment: `top` (default), `middle`, `bottom`.   |
+| `min-length`     | `minLength`     | Section-only minimum height vertically or width horizontally.   |
 
 Sizes and lane shares must be finite and positive; padding and stroke width may be
 zero. YAML sizes are numbers. Source sizes are decimal numbers, optionally with
@@ -163,6 +165,31 @@ diagram defaults; each note starts from independent `noteStyle` defaults.
 Sections use theme primary fill/border/text colors; notes use theme note text.
 Fonts follow resolved Mermaid/theme settings and normal viewer font fallback.
 No fonts are embedded.
+
+### Text alignment
+
+Center section text in both directions with:
+
+```mermaid-example
+memorymap-beta
+    group "Storage"
+        section "Centered\nsection text"
+            style "text-align:center; vertical-align:middle; min-length:160"
+            note "An independently centered note."
+            noteStyle "text-align:center; vertical-align:middle"
+```
+
+Set diagram-wide defaults with `config.memorymap.sectionStyle.textAlign: center`
+and `verticalAlign: middle`. The same properties are available in `groupStyle`
+for group entry labels and in `noteStyle` for notes. Local `style` affects the
+owner's content and entry label, not children or notes.
+
+Horizontal alignment applies to every wrapped or explicitly broken line.
+Vertical alignment places the complete text block within its section or lane.
+Both properties use screen directions regardless of diagram orientation.
+A parent section's own content always stays in its top header above its children;
+`vertical-align` does not move that header over the children or reposition children.
+Alignment does not change wrapping, box sizes, or minimum lengths.
 
 ## Sizing, scrolling, and export
 

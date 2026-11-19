@@ -2651,6 +2651,14 @@ export interface MemorymapTextStyle {
   fontFamily?: string;
   fontSize?: number;
   fontWeight?: ('normal' | 'bold') | (100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900);
+  /**
+   * Horizontal alignment of text within its box or lane.
+   */
+  textAlign?: 'left' | 'center' | 'right';
+  /**
+   * Vertical alignment within a leaf box or lane; parent headers stay above children.
+   */
+  verticalAlign?: 'top' | 'middle' | 'bottom';
 }
 /**
  * This interface was referenced by `MermaidConfig`'s JSON-Schema

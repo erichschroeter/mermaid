@@ -109,20 +109,29 @@ allocations. Do not automatically shrink text to honor these numbers.
 YAML style objects use camelCase keys; source declaration strings use the
 corresponding kebab-case names.
 
-| Source property | YAML key      | Allowed targets and effect                                      |
-| --------------- | ------------- | --------------------------------------------------------------- |
-| `fill`          | `fill`        | Group/section box fill, not label or note lane backgrounds.     |
-| `stroke`        | `stroke`      | Group/section box border paint.                                 |
-| `stroke-width`  | `strokeWidth` | Group/section border width.                                     |
-| `color`         | `color`       | Owner text and entry label, or note text in `noteStyle`.        |
-| `font-family`   | `fontFamily`  | Owner text and entry label, or note text in `noteStyle`.        |
-| `font-size`     | `fontSize`    | Owner text and entry label, or note text in `noteStyle`.        |
-| `font-weight`   | `fontWeight`  | Owner text and entry label, or note text in `noteStyle`.        |
-| `min-length`    | `minLength`   | Sections only; minimum drawn length along the growth direction. |
+| Source property  | YAML key        | Allowed targets and effect                                               |
+| ---------------- | --------------- | ------------------------------------------------------------------------ |
+| `fill`           | `fill`          | Group/section box fill, not label or note lane backgrounds.              |
+| `stroke`         | `stroke`        | Group/section box border paint.                                          |
+| `stroke-width`   | `strokeWidth`   | Group/section border width.                                              |
+| `color`          | `color`         | Owner text and entry label, or note text in `noteStyle`.                 |
+| `font-family`    | `fontFamily`    | Owner text and entry label, or note text in `noteStyle`.                 |
+| `font-size`      | `fontSize`      | Owner text and entry label, or note text in `noteStyle`.                 |
+| `font-weight`    | `fontWeight`    | Owner text and entry label, or note text in `noteStyle`.                 |
+| `text-align`     | `textAlign`     | Owner text and entry label, or independent note text; left/center/right. |
+| `vertical-align` | `verticalAlign` | Owner text and entry label, or independent note text; top/middle/bottom. |
+| `min-length`     | `minLength`     | Sections only; minimum drawn length along the growth direction.          |
 
 `groupStyle` and group-local `style` do not accept minimum section length.
-`noteStyle` accepts only the four text properties. Notes have no independently
+`noteStyle` accepts only the six text properties. Notes have no independently
 styled background or border box in the first version.
+
+Implementation follow-up requested by the user: text alignment defaults to
+left/top and may be configured diagram-wide or per owner. It changes placement,
+not dimensions or wrapping, and uses screen directions in either orientation.
+Each wrapped line aligns horizontally; the complete block aligns vertically
+inside a leaf box or label/note lane. Parent content remains a top header above
+children, with no inheritance to children or notes.
 
 There are no arbitrary CSS declarations, selectors, functions, variables,
 resource URLs, or extra per-section width/height controls. The allowlist can be
