@@ -43,8 +43,13 @@ the [boot memory map proposal](../examples/boot-memory-map.mmd) as acceptance
 scenarios. Evaluate its `address.width`, `memory.width`, and `notes.col_width`
 proposals against Mermaid's current configuration conventions and both
 orientations; the example values and property names remain proposals.
-Coordinate per-section style syntax with
+Use the local quoted `style` and `noteStyle` forms established by
 [Define the memorymap syntax and diagnostics](04-syntax-and-diagnostics.md).
+Finish their supported declaration grammar and property/value vocabulary,
+including how source-level sizing is expressed, without reopening structural
+ownership or requiring unique display labels. Unknown or invalid declarations
+must produce useful diagnostics; the payload is not unrestricted CSS.
+External references are literal note text, not clickable-link syntax.
 
 Keep the answer at specification level; do not implement rendering or schema
 changes.
@@ -53,3 +58,4 @@ changes.
 
 - [Choose layout and sizing in both orientations](02-layout-and-sizing.md)
 - [Choose scrolling and export ownership](03-scrolling-and-export.md)
+- [Define the memorymap syntax and diagnostics](04-syntax-and-diagnostics.md)

@@ -18,7 +18,7 @@ section styling, and wrapping notes. No diagram implementation is included.
 - [Boot memory map proposal](examples/boot-memory-map.mmd) is the user-supplied
   acceptance scenario, not an accepted grammar or configuration schema.
   Its syntax and percentage-based widths are proposals.
-- Configuration shape and exact syntax remain open.
+- Configuration shape and supported style declarations remain open.
 - Consult the `wayfinder`, `grilling`, and `domain-modeling` skills each session.
   All initial tickets are human-in-the-loop conversations.
 - Use the [memory map glossary](../../GLOSSARY.md) for confirmed terminology.
@@ -60,6 +60,9 @@ section styling, and wrapping notes. No diagram implementation is included.
 - [Choose scrolling and export ownership](tickets/03-scrolling-and-export.md):
   hosts own scrolling; complete SVG output defaults to intrinsic size with
   configurable responsive fitting.
+- [Define the memorymap syntax and diagnostics](tickets/04-syntax-and-diagnostics.md):
+  explicit indented groups and sections use quoted strings and local properties;
+  bare sections are valid, and malformed input fails with positioned diagnostics.
 
 ## Not yet specified
 
@@ -72,5 +75,5 @@ existing child tickets. Revisit as those decisions expose further constraints.
   documentation changes: this effort ends at an agreed specification.
 - Runtime allocations, ownership tracking, and changing memory contents:
   this effort documents static memory layouts.
-- Treating the proposed syntax, exact configuration keys, or example percentage
-  values as already approved.
+- Treating the original shorthand, exact configuration keys, style property
+  vocabulary, or example percentage values as already approved.

@@ -14,6 +14,10 @@ A top-level collection of one or more dedicated sections, identified by a requir
 A dedicated section within a group or another section, such as a bootloader copy, reserved area, or bitmap storage. Its extent is not implied by an entry label.
 _Avoid_: Separator (a separator marks a boundary between sections).
 
+**Section content**:
+Optional descriptive text belonging to a memory section, distinct from its entry label and note.
+_Avoid_: Section label (ambiguous between entry label and section content).
+
 **Section length**:
 The drawn extent of a section along the map's growth direction: height in a vertical map and width in a horizontal map. It describes diagram geometry, not memory capacity.
 

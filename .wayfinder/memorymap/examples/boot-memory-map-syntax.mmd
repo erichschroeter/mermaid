@@ -1,0 +1,20 @@
+memorymap vertical
+    %% Planning example; memorymap rendering is not implemented yet.
+    %% Style declarations await the customization contract.
+    accTitle: Boot memory map
+    accDescr {
+        Boot storage with four XLDR copies, EBOOT, and a splash-screen bitmap.
+    }
+    group "0x00000000"
+        section "XLDR\nCopy 0"
+            style "fill:#F4CCCC"
+        section "XLDR\nCopy 1"
+        section "XLDR\nCopy 2"
+        section "XLDR\nCopy 3"
+        note "Boot ROM requires there to be 4 copies on XLDR in each of the 1st 4 blocks"
+    group "0x00080000"
+        section "EBOOT"
+            note "256K reserved for EBOOT. Unused portion is filled with 0xFF."
+    group "0x000C0000"
+        section "Splash Screen\nBitmap"
+            note "Must be multiple of 128K and must be big enough to fit largest splash screen image for all printers"
