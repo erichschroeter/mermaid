@@ -151,8 +151,9 @@ ranges are not errors.
   unchanged as historical input, not accepted shorthand.
 
 The new assets are specification examples, not executable validation. The
-memory-map parser does not exist yet, and their illustrative style vocabulary
-awaits the customization decision.
+memory-map parser does not exist yet. Style semantics are specified separately
+by
+[Define styling, notes, and configuration](05-styling-notes-and-configuration.md).
 
 ### Repository evidence and follow-up
 

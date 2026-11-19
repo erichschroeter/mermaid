@@ -24,3 +24,9 @@ The drawn extent of a section along the map's growth direction: height in a vert
 **Entry label**:
 Literal text identifying a group or optionally a section at any depth, such as `0x00000000`, `Boot area`, or `Bank A`. A numeric-looking label does not imply an address value, size, or boundary.
 _Avoid_: Address entry (entry labels need not be addresses).
+
+**Lane**:
+A local band for entry labels, memory sections, or notes, arranged according to the map's orientation.
+
+**Lane shares**:
+Preferred relative allocations among active lanes, distinct from the drawn lengths of memory sections.

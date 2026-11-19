@@ -57,6 +57,22 @@ diagnostics with source context and no partial rendering. Do not treat the
 preserved original shorthand example as valid grammar or claim these assets
 have passed a parser that has not been implemented.
 
+Derive customization checks from
+[Define styling, notes, and configuration](05-styling-notes-and-configuration.md)
+and its configured example. Cover actual frontmatter ingestion and registered
+key survival, site/frontmatter/local field-level precedence, theme defaults,
+owner-only overrides, and note isolation. Check normalized active lane shares,
+unused-lane removal, preferred root versus nested cross-axis allocation,
+wrapping widths, padding, and minimum lengths in both orientations.
+
+Include valid/invalid units, finite numeric ranges, supported hexadecimal
+colors, text-only note styles, wrong-target properties, and malformed or
+duplicate source declarations. Test font changes before measurement and
+borderless paint without geometry changes. Distinguish invalid registered
+values from unknown YAML keys that the shared sanitizer may discard. The
+agreed numeric defaults have not yet been visually calibrated; any unresolved
+readability concern must be surfaced, not silently treated as a tested result.
+
 Determine whether any remaining choice prevents implementation without
 guesswork. Surface that choice as a new decision ticket rather than using this
 ticket to deliver the implementation or duplicate earlier resolutions. The

@@ -18,7 +18,6 @@ section styling, and wrapping notes. No diagram implementation is included.
 - [Boot memory map proposal](examples/boot-memory-map.mmd) is the user-supplied
   acceptance scenario, not an accepted grammar or configuration schema.
   Its syntax and percentage-based widths are proposals.
-- Configuration shape and supported style declarations remain open.
 - Consult the `wayfinder`, `grilling`, and `domain-modeling` skills each session.
   All initial tickets are human-in-the-loop conversations.
 - Use the [memory map glossary](../../GLOSSARY.md) for confirmed terminology.
@@ -63,6 +62,9 @@ section styling, and wrapping notes. No diagram implementation is included.
 - [Define the memorymap syntax and diagnostics](tickets/04-syntax-and-diagnostics.md):
   explicit indented groups and sections use quoted strings and local properties;
   bare sections are valid, and malformed input fails with positioned diagnostics.
+- [Define styling, notes, and configuration](tickets/05-styling-notes-and-configuration.md):
+  typed `memorymap` configuration and allowlisted owner-only styles define
+  sizing, lane shares, theme defaults, and validation boundaries.
 
 ## Not yet specified
 
@@ -75,5 +77,8 @@ existing child tickets. Revisit as those decisions expose further constraints.
   documentation changes: this effort ends at an agreed specification.
 - Runtime allocations, ownership tracking, and changing memory contents:
   this effort documents static memory layouts.
-- Treating the original shorthand, exact configuration keys, style property
-  vocabulary, or example percentage values as already approved.
+- Supporting the original bare-label shorthand or top-level
+  `address`/`memory`/`notes` configuration proposal.
+- Arbitrary CSS and relative CSS sizing units: the first version uses the
+  bounded contract in
+  [Define styling, notes, and configuration](tickets/05-styling-notes-and-configuration.md).
