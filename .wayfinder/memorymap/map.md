@@ -1,7 +1,7 @@
 ---
 title: Chart native Mermaid memory map support
 labels: [wayfinder:map]
-state: open
+state: closed
 ---
 
 ## Destination
@@ -65,11 +65,14 @@ section styling, and wrapping notes. No diagram implementation is included.
 - [Define styling, notes, and configuration](tickets/05-styling-notes-and-configuration.md):
   typed `memorymap` configuration and allowlisted owner-only styles define
   sizing, lane shares, theme defaults, and validation boundaries.
+- [Agree integration and acceptance criteria](tickets/06-integration-and-acceptance.md):
+  native integration, browsable local examples, automated/manual gates, and
+  scale checks complete the specification for implementation handoff.
 
 ## Not yet specified
 
-No additional in-scope fog is currently identified beyond the questions in
-existing child tickets. Revisit as those decisions expose further constraints.
+None identified at planning completion. All decision tickets are resolved;
+implementation and its validation remain outside this map's destination.
 
 ## Out of scope
 
