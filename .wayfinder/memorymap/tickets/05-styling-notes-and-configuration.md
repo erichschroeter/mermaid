@@ -15,6 +15,13 @@ Decide section fill and boundary styling, label and note presentation, wrapping
 versus scaling, explicit line breaks, sizing controls, and configuration scope,
 names, defaults, precedence, and invalid-value handling.
 
+Cover styling for containing sections and children, whether styles inherit,
+and how overrides work. Text and notes do not automatically propagate from
+parents to children; decide presentation for notes explicitly attached to a
+group or section. Include optional entry labels at every section depth and
+intentional blank sections. Sizing controls must not interpret label text as
+numeric addresses.
+
 Use a reserved section with a red background and the long developer notes in
 the [boot memory map proposal](../examples/boot-memory-map.mmd) as acceptance
 scenarios. Evaluate its `address.width`, `memory.width`, and `notes.col_width`

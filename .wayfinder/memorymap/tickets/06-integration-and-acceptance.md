@@ -21,6 +21,13 @@ Agree the necessary parser and model tests, layout and visual examples, both
 orientations, long notes, reserved-section fills, error cases, accessibility,
 and scrolling/export checks that demonstrate the chosen behavior.
 
+Include arbitrary and repeated entry labels, preserved source order, optional
+section entry labels, recursive containment, parents with their own content
+and notes, intentionally blank sections, and both note scopes. Check that
+numeric-looking labels do not imply ranges, sizing, sorting, or overlap
+validation. Cover missing required group structure and malformed nesting using
+the agreed syntax diagnostics.
+
 Determine whether any remaining choice prevents implementation without
 guesswork. Surface that choice as a new decision ticket rather than using this
 ticket to deliver the implementation or duplicate earlier resolutions. The

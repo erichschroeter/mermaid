@@ -12,16 +12,13 @@ section styling, and wrapping notes. No diagram implementation is included.
 
 ## Notes
 
-- Scope: static address-space documentation, including firmware, flash, RAM, and
+- Scope: static memory-layout documentation, including firmware, flash, RAM, and
   reserved memory. Both orientations, customizable section fills, and wrapping
   long developer notes are required.
 - [Boot memory map proposal](examples/boot-memory-map.mmd) is the user-supplied
   acceptance scenario, not an accepted grammar or configuration schema.
   Its syntax and percentage-based widths are proposals.
-- The `-` markers delimit dedicated memory sections beneath an address entry;
-  they do not represent empty space. Individual section boundaries and sizes
-  remain to be specified.
-- Viewport ownership, address semantics, proportional versus schematic sizing,
+- Viewport ownership, section sizing,
   configuration shape, and exact syntax remain open.
 - Consult the `wayfinder`, `grilling`, and `domain-modeling` skills each session.
   All initial tickets are human-in-the-loop conversations.
@@ -50,15 +47,18 @@ section styling, and wrapping notes. No diagram implementation is included.
 - After resolution, create newly specifiable child tickets, then wire their
   dependencies in a second pass. Remove graduated fog. Close any mis-scoped
   ticket and link it under **Out of scope**, not **Decisions so far**.
-- Charting is complete; no decision ticket has been claimed or resolved.
 
 ## Decisions so far
 
 <!-- One linked-title gist per resolved ticket; the full answer lives there. -->
 
+- [Define addresses and dedicated memory sections](tickets/01-addresses-and-sections.md):
+  literal labels identify source-ordered groups and recursively nested sections;
+  labels imply no numeric ranges or sizes.
+
 ## Not yet specified
 
-- Further constraints or trade-offs exposed by combining dedicated sections,
+- Further constraints or trade-offs exposed by combining nested dedicated sections,
   the eventual sizing model, and long annotations. Specific follow-on questions
   cannot yet be distinguished from concerns the initial decisions will settle.
 
@@ -67,5 +67,5 @@ section styling, and wrapping notes. No diagram implementation is included.
 - Implementing the diagram, renderer, parser, configuration schema, tests, or
   documentation changes: this effort ends at an agreed specification.
 - Runtime allocations, ownership tracking, and changing memory contents:
-  this effort documents static address spaces.
+  this effort documents static memory layouts.
 - Treating the proposed syntax or percentage widths as already approved.
