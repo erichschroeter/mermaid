@@ -3,8 +3,9 @@ import type { Selection } from 'd3';
 import { configureSvgSize } from '../../setupGraphViewbox.js';
 import { selectSvgElement } from '../../rendering-util/selectSvgElement.js';
 import { db } from './memorymapDb.js';
+import { collapseBorders } from './memorymapBorders.js';
 import { alignmentOffset, layoutMemoryMap } from './memorymapLayout.js';
-import type { MeasureText, PlacedNode, TextBlock, TextMetrics } from './memorymapLayout.js';
+import type { MeasureText, PlacedNode, Rect, TextBlock, TextMetrics } from './memorymapLayout.js';
 import type { TextStyle } from './memorymapTypes.js';
 
 const textStyle = (
@@ -41,7 +42,7 @@ const drawText = (parent: SVGGroup, block: TextBlock | undefined, className: str
   });
 };
 
-const drawNode = (parent: SVGGroup, item: PlacedNode): void => {
+const drawNode = (parent: SVGGroup, item: PlacedNode, collapsed: Map<PlacedNode, Rect[]>): void => {
   const group = parent
     .append('g')
     .attr('class', `memorymap-${item.node.kind}`)
@@ -51,7 +52,8 @@ const drawNode = (parent: SVGGroup, item: PlacedNode): void => {
     .append('g')
     .attr('class', 'memorymap-body')
     .attr('transform', `translate(${item.box.x},${item.box.y})`);
-  const stroke = item.style.strokeWidth;
+  const borders = collapsed.get(item);
+  const stroke = borders ? 0 : item.style.strokeWidth;
   box
     .append('rect')
     .attr('class', 'memorymap-box')
@@ -60,11 +62,25 @@ const drawNode = (parent: SVGGroup, item: PlacedNode): void => {
     .attr('width', Math.max(0, item.box.width - stroke))
     .attr('height', Math.max(0, item.box.height - stroke))
     .style('fill', item.style.fill)
-    .style('stroke', item.style.stroke)
+    .style('stroke', borders ? 'none' : item.style.stroke)
     .style('stroke-width', stroke);
+  if (borders?.length) {
+    box
+      .append('path')
+      .attr('class', 'memorymap-border')
+      .attr(
+        'd',
+        borders
+          .map(({ x, y, width, height }) => `M${x},${y}h${width}v${height}h${-width}Z`)
+          .join('')
+      )
+      .style('fill', item.style.stroke)
+      .style('stroke', 'none')
+      .style('stroke-width', 0);
+  }
   drawText(box, item.content, 'memorymap-content');
   for (const child of item.children) {
-    drawNode(box, child);
+    drawNode(box, child, collapsed);
   }
   drawText(group, item.label, 'memorymap-label');
   drawText(group, item.note, 'memorymap-note');
@@ -104,8 +120,9 @@ export const renderer: DiagramRenderer = {
       probe.remove();
     }
     drawText(root, layout.title, 'memorymap-title');
+    const collapsed = collapseBorders(layout.nodes);
     for (const node of layout.nodes) {
-      drawNode(root, node);
+      drawNode(root, node, collapsed);
     }
     svg.attr('viewBox', `0 0 ${layout.width} ${layout.height}`);
     configureSvgSize(svg, layout.height, layout.width, db.getConfig().useMaxWidth);

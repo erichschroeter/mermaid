@@ -125,6 +125,51 @@
     "visualReview": "Copilot reviewed the centered memory-map-example fixture against the supplied reference image, using the browser/font environment above. The new local snapshot was compared successfully afterward.",
     "review": "Read-only code-review agent found no substantive issues."
   },
+  "borderFollowup": {
+    "cause": "Each touching box painted a full inset stroke, doubling the visible separator width.",
+    "behavior": "Collapse opposing shared edges without changing layout or outside widths. Wider strokes win; later declarations break equal-width ties, including color. Hidden and separated borders remain independent.",
+    "regression": {
+      "method": "Rasterize the actual standalone SVG in Chromium and count painted pixels perpendicular to the outside and shared edges.",
+      "before": "Two groups with 4px section borders reproducibly painted outer:4/shared:8 in both orientations; all four repeated cases failed the outer:4/shared:4 assertion.",
+      "after": "Section borders across groups and actual group outlines paint outer:4/shared:4 in both orientations; all eight repeated cases passed."
+    },
+    "checks": [
+      {
+        "command": "pnpm exec vitest run packages/mermaid/src/diagrams/memorymap --maxWorkers=2",
+        "result": "107 tests passed, including seven new shared-border geometry cases"
+      },
+      {
+        "command": "MERMAID_PORT=9017 MERMAID_E2E_FIXTURE_TIER=pr-check pnpm e2e e2e/rendering/memorymap/pr-check --grep 'touching groups paint' --repeat-each=2 --workers=2",
+        "result": "8 tests passed on a fresh Playwright-owned server"
+      },
+      {
+        "command": "MERMAID_PORT=9017 MERMAID_E2E_FIXTURE_TIER=pr-check pnpm e2e e2e/rendering/mmd-snapshots.spec.ts e2e/rendering/memorymap --grep memorymap --workers=2",
+        "result": "36 tests passed, including exact pixel regressions, snapshot comparisons, complete geometry, alignment, embedding, and scale checks"
+      },
+      {
+        "command": "pnpm build",
+        "result": "passed; log checked for TypeScript errors"
+      },
+      {
+        "command": "pnpm exec tsc --noEmit -p packages/mermaid/tsconfig.json",
+        "result": "passed"
+      },
+      {
+        "command": "pnpm test:check:tsc",
+        "result": "passed for mermaid, @mermaid-js/layout-elk, and @mermaid-js/parser"
+      },
+      {
+        "command": "pnpm test --maxWorkers=2",
+        "result": "Lint and formatting passed; 405 test files and 8569 tests passed, 16 skipped, 2 todo. Generated ignored API docs required formatting after build tools regenerated them."
+      },
+      {
+        "command": "pnpm build:types",
+        "result": "passed; restored parser declarations after consumer checks, followed by another successful explicit source typecheck"
+      }
+    ],
+    "visualReview": "Copilot inspected fresh local-only PNG captures of all eleven fixtures, not just tolerant existing baselines. Reference, boot, configured, nested, long-note, and dark fixtures retain outside frames, fills, and text placement while shared separators are single-width in both orientations. This is not user visual approval.",
+    "review": "Read-only code-review agent found no significant issues."
+  },
   "limitations": [
     "Entry labels are literal text; no memory address, capacity, range, or allocation calculations.",
     "The host owns scrolling and zoom; export pagination and external font availability are outside diagram guarantees.",

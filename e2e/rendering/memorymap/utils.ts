@@ -14,7 +14,7 @@ export const expectCompleteBounds = async (page: Page): Promise<void> => {
       failures.push('non-finite or empty SVG');
     }
     const inverse = svg.getCTM()!.inverse();
-    for (const item of svg.querySelectorAll<SVGGraphicsElement>('rect, text')) {
+    for (const item of svg.querySelectorAll<SVGGraphicsElement>('rect, path, text')) {
       const box = item.getBBox();
       const stroke =
         item.tagName === 'rect' ? Number.parseFloat(getComputedStyle(item).strokeWidth) / 2 : 0;

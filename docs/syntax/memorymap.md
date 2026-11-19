@@ -261,6 +261,14 @@ not have to grow along with it. An oversized parent retains trailing padding
 rather than stretching children or creating another section. Hidden borders
 change paint, not geometry.
 
+Touching visible borders collapse to a single separator, including sections in
+different groups. The wider border wins; for equal widths, the later declaration
+wins, including its color. The winning stroke stays inside its owning box, so it
+does not cover a thinner neighbor's content. Outside borders keep their configured
+width. This changes paint only, not section sizes, text placement, or spacing.
+Borders separated by padding are not collapsed, and `stroke:none` does not hide a
+visible neighbor's border.
+
 Text wraps, including long unbroken strings, without automatic shrinking or
 truncation. Summarize very long notes or explicitly reduce their font size.
 There are no displaced callouts or internally scrolling note panels.

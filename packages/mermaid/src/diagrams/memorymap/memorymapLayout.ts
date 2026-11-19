@@ -25,7 +25,7 @@ export interface TextBlock {
   x: number;
   y: number;
 }
-interface Rect {
+export interface Rect {
   x: number;
   y: number;
   width: number;

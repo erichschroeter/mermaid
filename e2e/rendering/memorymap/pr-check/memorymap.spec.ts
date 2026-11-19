@@ -26,6 +26,84 @@ for (const name of readdirSync(fixtures)
 }
 
 for (const orientation of ['vertical', 'horizontal'] as const) {
+  for (const target of ['section', 'group'] as const) {
+    test(`touching groups paint a single ${target} border width: ${orientation}`, async ({
+      page,
+    }, testInfo) => {
+      await renderGraph(
+        page,
+        testInfo,
+        `memorymap-beta ${orientation}
+group "A"
+ section
+group "B"
+ section`,
+        {
+          screenshot: false,
+          memorymap: {
+            padding: 0,
+            groupStyle: { stroke: '#000000', strokeWidth: target === 'group' ? 4 : 0 },
+            sectionStyle: {
+              fill: '#FFFFFF',
+              stroke: '#000000',
+              strokeWidth: target === 'section' ? 4 : 0,
+              minLength: 60,
+            },
+          },
+        }
+      );
+      const paintedWidths = await diagramSvg(page).evaluate(
+        async (svg, { vertical, target }) => {
+          const bodies = [
+            ...svg.querySelectorAll<SVGGElement>(`.memorymap-${target} > .memorymap-body`),
+          ];
+          const box = bodies[0].querySelector<SVGRectElement>('.memorymap-box')!.getBBox();
+          const points = bodies.map((body) =>
+            new DOMPoint(
+              vertical ? box.x + box.width / 2 : 0,
+              vertical ? 0 : box.y + box.height / 2
+            ).matrixTransform(body.getCTM()!)
+          );
+          const [, , width, height] = svg.getAttribute('viewBox')!.split(' ').map(Number);
+          const clone = svg.cloneNode(true) as SVGSVGElement;
+          clone.setAttribute('width', String(width));
+          clone.setAttribute('height', String(height));
+          const image = new Image();
+          image.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(new XMLSerializer().serializeToString(clone))}`;
+          await image.decode();
+          const canvas = document.createElement('canvas');
+          canvas.width = Math.ceil(width);
+          canvas.height = Math.ceil(height);
+          const context = canvas.getContext('2d')!;
+          context.drawImage(image, 0, 0, width, height);
+          const count = (point: DOMPoint) => {
+            const { data } = context.getImageData(
+              Math.floor(point.x) - (vertical ? 0 : 12),
+              Math.floor(point.y) - (vertical ? 12 : 0),
+              vertical ? 1 : 24,
+              vertical ? 24 : 1
+            );
+            let pixels = 0;
+            for (let index = 0; index < data.length; index += 4) {
+              if (
+                data[index] < 16 &&
+                data[index + 1] < 16 &&
+                data[index + 2] < 16 &&
+                data[index + 3] > 240
+              ) {
+                pixels++;
+              }
+            }
+            return pixels;
+          };
+          return { outer: count(points[0]), shared: count(points[1]) };
+        },
+        { vertical: orientation === 'vertical', target }
+      );
+      expect(paintedWidths).toEqual({ outer: 4, shared: 4 });
+    });
+  }
+
   test(`text alignment in section boxes: ${orientation}`, async ({ page }, testInfo) => {
     const alignments = [
       ['left', 'top'],
