@@ -45,9 +45,12 @@ This defines the structural language, not an implemented parser.
 
 ### Header and root scope
 
-- The header is `memorymap`, optionally followed by `vertical` or `horizontal`.
+- The header is `memorymap-beta`, optionally followed by `vertical` or `horizontal`.
   Omission means vertical. Keywords and orientation values are case-sensitive.
   Unknown values are errors.
+  During implementation, the user approved requiring the `-beta` suffix to follow
+  the repository's policy for new diagrams. The diagram ID and configuration
+  namespace remain `memorymap`; the unsuffixed header is not accepted.
 - The diagram requires one or more `group "label"` declarations. A group's
   label is a nonblank quoted string, and every group contains at least one
   section. Groups cannot nest.

@@ -1,0 +1,27 @@
+---
+config:
+    memorymap:
+        useMaxWidth: false
+        crossSize: 600
+        wrapWidth: 240
+        padding: 8
+        laneShares: { label: 33, section: 33, note: 34 }
+        groupStyle: { fontSize: 16 }
+        sectionStyle: { minLength: 80 }
+        noteStyle: { fontSize: 12 }
+---
+memorymap-beta horizontal
+    accTitle: Configured horizontal memory map
+    accDescr: Independent style defaults, blank and borderless sections.
+    group "Boot storage"
+        style "font-size:20px"
+        note "Group notes keep their independent diagram note defaults."
+        section "XLDR"
+            style "fill:#F4CCCC; min-length:120"
+            label "0x00000000"
+            note "This note has its own explicit font settings."
+            noteStyle "font-size:10px; font-weight:bold"
+            section "Copy 0"
+            section "Copy 1"
+        section
+            style "stroke:none"

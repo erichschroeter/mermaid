@@ -181,6 +181,7 @@ function sidebarSyntax() {
         syntaxItem('Quadrant Chart', 'quadrantChart'),
         syntaxItem('Requirement Diagram', 'requirementDiagram'),
         syntaxItem('Use Case Diagram', 'usecase'),
+        syntaxItem('Memory Map', 'memorymap'),
         syntaxItem('GitGraph (Git) Diagram', 'gitgraph'),
         syntaxItem('C4 Diagram', 'c4'),
         syntaxItem('Mindmaps', 'mindmap'),

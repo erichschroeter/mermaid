@@ -1,0 +1,196 @@
+---
+description: 'Document static memory layouts with literal entry labels, nested sections, and wrapped developer notes.'
+---
+
+<!--- cspell:ignore EBOOT XLDR RRGGBB dedents relayout --->
+
+# Memory Maps
+
+```warning
+Memory maps are in beta. Diagrams start with the `memorymap-beta` keyword, and the syntax may still change in a backwards-incompatible way before it is declared stable.
+```
+
+Memory maps document static layouts. Entry labels such as `0x00000000` are
+**literal text**, not calculated addresses: Mermaid does not infer sizes, ranges,
+gaps, overlaps, or capacity. Source order is drawing order.
+
+```mermaid-example
+memorymap-beta vertical
+    accTitle: Boot storage
+    accDescr: Four bootloader copies followed by EBOOT and a splash bitmap.
+    group "0x00000000"
+        section "XLDR\nCopy 0"
+            style "fill:#F4CCCC"
+        section "XLDR\nCopy 1"
+        section "XLDR\nCopy 2"
+        section "XLDR\nCopy 3"
+        note "Boot ROM requires four copies in the first four blocks."
+    group "0x00080000"
+        section "EBOOT"
+            note "256K reserved. Unused space is filled with 0xFF."
+    group "0x000C0000"
+        section "Splash Screen\nBitmap"
+            note "Must be a multiple of 128K and fit the largest splash screen."
+```
+
+## Orientation, groups, and sections
+
+`memorymap-beta` defaults to `vertical`: groups and sections grow downward, with entry
+labels on the left and notes on the right. `memorymap-beta horizontal` grows rightward,
+with entry labels above and notes below. Text remains upright.
+
+A map needs at least one `group "entry label"`, and every group needs at least one
+section. Group labels must not be blank. Labels may repeat. Sections nest inside
+sections; groups do not nest. `section` and `section ""` both create blank sections.
+A parent encloses its children and displays its own text in a top header in
+**both** orientations.
+
+```mermaid-example
+memorymap-beta horizontal
+    group "Boot storage"
+        section "Firmware"
+            label "Bank A"
+            section "Boot"
+            section "Application"
+            note "This note belongs to Firmware, not Application."
+        section
+            style "stroke:none"
+            note "Reserved blank section."
+```
+
+## Strings, indentation, and metadata
+
+Display strings use JSON double quotes and escapes: `\"`, `\\`, `\n`, and the other
+standard JSON escapes. Keep each statement on one physical line. Text is literal:
+no HTML, Markdown, automatic links, or click actions. A URL in a note is only text.
+
+Use **spaces**, not tabs, for structural indentation. No fixed indent width is
+required, but siblings must align and dedents must return to an established level.
+Root groups and accessibility metadata share a consistent baseline, which may be
+unindented or indented below the header. Blank lines and full-line `%%` comments do
+not change nesting. Inline comments are not supported.
+
+`label "..."` is an optional section entry label. `note "..."`, `style "..."`, and
+`noteStyle "..."` belong to their directly containing group or section; they may
+appear before, between, or after child declarations. Each property is allowed at
+most once per owner, and `noteStyle` requires a note on that same owner.
+
+Root-only accessibility metadata uses standard Mermaid syntax:
+
+```text
+accTitle: Memory layout
+accDescr: A short description.
+```
+
+Use `accDescr { ... }` for a multiline description. Duplicate metadata, unknown
+keywords, bad strings, empty groups, and malformed nesting are errors, not partial
+diagrams. Diagnostics identify a **body line and column** after shared Mermaid
+preprocessing (not the original frontmatter line), and show source context.
+Shared frontmatter/directive preprocessing is unchanged and is not quote-aware.
+The early bare-address and `-` shorthand is not supported.
+
+## Configuration and styles
+
+All diagram-specific settings live under `config.memorymap`.
+
+```mermaid-example
+---
+config:
+    memorymap:
+        crossSize: 600
+        wrapWidth: 240
+        padding: 8
+        laneShares: { label: 33, section: 33, note: 34 }
+        sectionStyle: { minLength: 80 }
+        noteStyle: { fontSize: 12 }
+---
+memorymap-beta vertical
+    group "Storage"
+        section "Reserved"
+            style "fill:#F4CCCC; min-length:120"
+            note "Long notes wrap and may grow the owning section."
+            noteStyle "font-size:10px; font-weight:bold"
+        section "Application"
+```
+
+| Setting        | Default                           | Meaning                                                               |
+| -------------- | --------------------------------- | --------------------------------------------------------------------- |
+| `useMaxWidth`  | `false`                           | Intrinsic SVG dimensions; `true` fits the complete SVG to host width. |
+| `crossSize`    | `600`                             | Preferred root width vertically, or height horizontally.              |
+| `wrapWidth`    | `240`                             | Preferred horizontal text wrap width in either orientation.           |
+| `padding`      | `8`                               | Content/lane insets, parent spacing, and separation between groups.   |
+| `laneShares`   | `{label:33, section:33, note:34}` | Relative cross-axis shares; need not sum to 100.                      |
+| `groupStyle`   | Theme text; no fill or border     | Defaults for group containers and their entry labels.                 |
+| `sectionStyle` | Theme box/text; `minLength:80`    | Defaults for every section.                                           |
+| `noteStyle`    | Theme note text                   | Independent text defaults for every note.                             |
+
+Empty label/note lanes are omitted only when no sibling at that local level uses
+them; remaining shares are normalized. Nested layouts use their available parent
+space, not a fresh `crossSize`. Adjacent sibling sections abut; groups have padding.
+
+Source styles use kebab-case; YAML style objects use camelCase:
+
+| Source property | YAML key      | Target                                                        |
+| --------------- | ------------- | ------------------------------------------------------------- |
+| `fill`          | `fill`        | Group/section box only.                                       |
+| `stroke`        | `stroke`      | Group/section border.                                         |
+| `stroke-width`  | `strokeWidth` | Group/section border width.                                   |
+| `color`         | `color`       | Owner text and entry label, or note text in `noteStyle`.      |
+| `font-family`   | `fontFamily`  | Own text, entry label, or independent note text.              |
+| `font-size`     | `fontSize`    | Own text, entry label, or independent note text.              |
+| `font-weight`   | `fontWeight`  | Own text, entry label, or independent note text.              |
+| `min-length`    | `minLength`   | Section-only minimum height vertically or width horizontally. |
+
+Sizes and lane shares must be finite and positive; padding and stroke width may be
+zero. YAML sizes are numbers. Source sizes are decimal numbers, optionally with
+`px`, in the same diagram units. Explicit colors are `#RGB` or `#RRGGBB`; fill and
+stroke also accept `none`. Font weight is `normal`, `bold`, or multiples of 100
+from 100 to 900 (numeric YAML values for numeric weights). Font families are
+nonempty, unquoted comma-separated names, such as `Open Sans, sans-serif`.
+
+Style strings contain semicolon-separated `property:value` pairs, optionally with
+one trailing semicolon. Empty, duplicate, unknown, wrong-target, or invalid
+declarations are errors. Arbitrary CSS, named/functional colors, resource URLs,
+relative units, and per-section width/height controls are not supported.
+
+Defaults resolve from the effective theme, site configuration, diagram
+frontmatter, then owner-local styles, merging field by field. Protected Mermaid
+configuration rules still apply. Unknown YAML keys follow the shared sanitizer
+and may be removed before validation; registered values are runtime-validated.
+
+Local styles **do not cascade** to children or notes. Each child starts from its
+diagram defaults; each note starts from independent `noteStyle` defaults.
+Sections use theme primary fill/border/text colors; notes use theme note text.
+Fonts follow resolved Mermaid/theme settings and normal viewer font fallback.
+No fonts are embedded.
+
+## Sizing, scrolling, and export
+
+Lengths are **minimums**, not memory capacities or proportional weights. Content,
+wrapped notes, and nesting can grow a section beyond its minimum; neighbors do
+not have to grow along with it. An oversized parent retains trailing padding
+rather than stretching children or creating another section. Hidden borders
+change paint, not geometry.
+
+Text wraps, including long unbroken strings, without automatic shrinking or
+truncation. Summarize very long notes or explicitly reduce their font size.
+There are no displaced callouts or internally scrolling note panels.
+
+The default SVG has complete intrinsic dimensions and padded bounds, including
+painted borders. **The host owns scrolling**; either axis can overflow:
+
+```html
+<div style="max-width: 900px; max-height: 600px; overflow: auto">
+  <!-- Insert the complete Mermaid SVG here. -->
+</div>
+```
+
+`useMaxWidth: true` scales the complete SVG responsively without relayout or
+cropping. Standalone SVG output includes the entire layout; raster fitting,
+pagination, external viewer behavior, and custom host zoom are outside this
+diagram's guarantee.
+
+For local development, run `MERMAID_DEV_PORT=9000 pnpm dev` and open
+`http://localhost:9000/dev/?path=diagrams`, then navigate to
+`memorymap/pr-check`. The boot, nested, configured, and long-note examples are
+available in both orientations, with additional dark-theme examples.

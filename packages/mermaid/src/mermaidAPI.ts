@@ -27,6 +27,7 @@ import { addDiagrams } from './diagram-api/diagram-orchestration.js';
 import { detectType } from './diagram-api/detectType.js';
 import type { DiagramCode, DiagramMetadata, DiagramStyleClassDef } from './diagram-api/types.js';
 import { Diagram } from './Diagram.js';
+import { validateMemorymapConfig } from './diagrams/memorymap/memorymapStyle.js';
 import { evaluate } from './diagrams/common/common.js';
 import errorRenderer from './diagrams/error/errorRenderer.js';
 import { attachFunctions } from './interactionDb.js';
@@ -83,6 +84,7 @@ function processAndSetConfigs(text: string) {
     diagramType = undefined;
   }
   configApi.setDiagramConfigScope(diagramType);
+  validateMemorymapConfig(processed.config?.memorymap, configApi.getSiteConfig().secure);
   configApi.addDirective(processed.config ?? {});
   return processed;
 }
@@ -714,6 +716,7 @@ const render = async function (
  * @param  userOptions - Initial Mermaid options
  */
 function initialize(userOptions: MermaidConfig = {}) {
+  validateMemorymapConfig(userOptions.memorymap);
   const options: MermaidConfig = assignWithDepth({}, userOptions);
   // Handle legacy location of font-family configuration
   if (options?.fontFamily && !options.themeVariables?.fontFamily) {

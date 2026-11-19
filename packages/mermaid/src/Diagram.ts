@@ -75,7 +75,7 @@ export class Diagram {
         source = code.withComments;
       }
     }
-    const textToParse = encodeEntities(source) + '\n';
+    const textToParse = (db.preserveLiteralText ? source : encodeEntities(source)) + '\n';
     // Pass frontmatter line offset so positions can be adjusted to match the
     // original source (which includes frontmatter) shown in the editor.
     if (code.frontmatterLineOffset) {

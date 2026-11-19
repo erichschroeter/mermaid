@@ -468,6 +468,8 @@ properties:
     $ref: '#/$defs/RadarDiagramConfig'
   usecase:
     $ref: '#/$defs/UsecaseDiagramConfig'
+  memorymap:
+    $ref: '#/$defs/MemorymapDiagramConfig'
   venn:
     $ref: '#/$defs/VennDiagramConfig'
   wardley-beta:
@@ -3098,6 +3100,102 @@ $defs: # JSON Schema definition (maybe we should move these to a separate file)
         minimum: 0
         maximum: 1
         default: 0.17
+
+  MemorymapTextStyle:
+    title: Memorymap Text Style
+    type: object
+    properties:
+      color:
+        type: string
+        pattern: '^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$'
+      fontFamily:
+        type: string
+        description: Unquoted, nonempty comma-separated font names.
+        minLength: 1
+      fontSize:
+        type: number
+        exclusiveMinimum: 0
+      fontWeight:
+        oneOf:
+          - type: string
+            enum: [normal, bold]
+          - type: integer
+            enum: [100, 200, 300, 400, 500, 600, 700, 800, 900]
+
+  MemorymapBoxStyle:
+    title: Memorymap Box Style
+    allOf: [{ $ref: '#/$defs/MemorymapTextStyle' }]
+    type: object
+    properties:
+      fill:
+        type: string
+        pattern: '^(?:none|#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6}))$'
+      stroke:
+        type: string
+        pattern: '^(?:none|#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6}))$'
+      strokeWidth:
+        type: number
+        minimum: 0
+        default: 1
+
+  MemorymapSectionStyle:
+    title: Memorymap Section Style
+    allOf: [{ $ref: '#/$defs/MemorymapBoxStyle' }]
+    type: object
+    properties:
+      minLength:
+        description: Minimum height vertically or width horizontally, in diagram units.
+        type: number
+        exclusiveMinimum: 0
+        default: 80
+
+  MemorymapDiagramConfig:
+    title: Memorymap Diagram Config
+    allOf: [{ $ref: '#/$defs/BaseDiagramConfig' }]
+    type: object
+    unevaluatedProperties: false
+    properties:
+      useMaxWidth:
+        description: Fit the complete SVG to the host width instead of using intrinsic dimensions.
+        type: boolean
+        default: false
+      crossSize:
+        description: Preferred root width vertically or height horizontally.
+        type: number
+        exclusiveMinimum: 0
+        default: 600
+      wrapWidth:
+        description: Preferred text wrap width in either orientation.
+        type: number
+        exclusiveMinimum: 0
+        default: 240
+      padding:
+        description: Content insets, lane separation and spacing between groups.
+        type: number
+        minimum: 0
+        default: 8
+      laneShares:
+        type: object
+        default: {}
+        properties:
+          label:
+            type: number
+            exclusiveMinimum: 0
+            default: 33
+          section:
+            type: number
+            exclusiveMinimum: 0
+            default: 33
+          note:
+            type: number
+            exclusiveMinimum: 0
+            default: 34
+      groupStyle:
+        $ref: '#/$defs/MemorymapBoxStyle'
+      sectionStyle:
+        $ref: '#/$defs/MemorymapSectionStyle'
+      noteStyle:
+        $ref: '#/$defs/MemorymapTextStyle'
 
   UsecaseDiagramConfig:
     title: Usecase Diagram Config

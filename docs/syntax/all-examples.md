@@ -2714,6 +2714,84 @@ Manager --> Developer
 
 </details>
 
+## Memory Map
+
+Static memory layouts with literal entry labels, nested sections, and developer notes
+
+### Boot storage
+
+```mermaid
+memorymap-beta vertical
+  group "0x00000000"
+    section "XLDR\nCopy 0"
+      style "fill:#F4CCCC"
+    section "XLDR\nCopy 1"
+    section "XLDR\nCopy 2"
+    section "XLDR\nCopy 3"
+    note "Boot ROM requires four copies in the first four blocks."
+  group "0x00080000"
+    section "EBOOT"
+      note "256K reserved. Unused space is filled with 0xFF."
+  group "0x000C0000"
+    section "Splash Screen\nBitmap"
+      note "Must be a multiple of 128K and fit the largest splash screen."
+```
+
+<details>
+<summary>Code</summary>
+
+```mermaid-example
+memorymap-beta vertical
+  group "0x00000000"
+    section "XLDR\nCopy 0"
+      style "fill:#F4CCCC"
+    section "XLDR\nCopy 1"
+    section "XLDR\nCopy 2"
+    section "XLDR\nCopy 3"
+    note "Boot ROM requires four copies in the first four blocks."
+  group "0x00080000"
+    section "EBOOT"
+      note "256K reserved. Unused space is filled with 0xFF."
+  group "0x000C0000"
+    section "Splash Screen\nBitmap"
+      note "Must be a multiple of 128K and fit the largest splash screen."
+```
+
+</details>
+
+### Nested horizontal layout
+
+```mermaid
+memorymap-beta horizontal
+  group "Bank A"
+    section "Firmware"
+      section "Boot"
+        label "Primary"
+      section "Application"
+      note "The parent owns this note."
+    section
+      style "stroke:none"
+      note "Reserved blank section."
+```
+
+<details>
+<summary>Code</summary>
+
+```mermaid-example
+memorymap-beta horizontal
+  group "Bank A"
+    section "Firmware"
+      section "Boot"
+        label "Primary"
+      section "Application"
+      note "The parent owns this note."
+    section
+      style "stroke:none"
+      note "Reserved blank section."
+```
+
+</details>
+
 ## Event Modeling Diagram
 
 Describe systems using an example of how information has changed within them over time

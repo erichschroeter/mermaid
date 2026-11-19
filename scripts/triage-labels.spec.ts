@@ -28,6 +28,7 @@ describe('triage-labels', () => {
     ['stateDiagram-v2\n  [*] --> A', 'Graph: State'],
     ['block-beta\n  a b', 'Graph: Block'],
     ['treeView-beta\n  root', 'Graph: TreeView'],
+    ['memorymap-beta vertical\n  group "Boot"\n    section', 'Graph: Memory Map'],
     ['railroad-ebnf-beta\n  a = b ;', 'Graph: Railroad'],
   ])('detects %j as %s', (code, label) => {
     expect(detectLabels(config, fence(code))).toEqual([label]);

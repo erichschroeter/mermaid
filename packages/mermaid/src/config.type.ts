@@ -388,6 +388,7 @@ export interface MermaidConfig {
   treeView?: TreeViewDiagramConfig;
   radar?: RadarDiagramConfig;
   usecase?: UsecaseDiagramConfig;
+  memorymap?: MemorymapDiagramConfig;
   venn?: VennDiagramConfig;
   'wardley-beta'?: WardleyDiagramConfig;
   cynefin?: CynefinDiagramConfig;
@@ -2598,6 +2599,68 @@ export interface UsecaseDiagramConfig extends BaseDiagramConfig {
    *
    */
   colorScheme?: 'role' | 'rotate';
+}
+/**
+ * This interface was referenced by `MermaidConfig`'s JSON-Schema
+ * via the `definition` "MemorymapDiagramConfig".
+ */
+export interface MemorymapDiagramConfig extends BaseDiagramConfig {
+  /**
+   * Fit the complete SVG to the host width instead of using intrinsic dimensions.
+   */
+  useMaxWidth?: boolean;
+  /**
+   * Preferred root width vertically or height horizontally.
+   */
+  crossSize?: number;
+  /**
+   * Preferred text wrap width in either orientation.
+   */
+  wrapWidth?: number;
+  /**
+   * Content insets, lane separation and spacing between groups.
+   */
+  padding?: number;
+  laneShares?: {
+    label?: number;
+    section?: number;
+    note?: number;
+  };
+  groupStyle?: MemorymapBoxStyle;
+  sectionStyle?: MemorymapSectionStyle;
+  noteStyle?: MemorymapTextStyle;
+}
+/**
+ * This interface was referenced by `MermaidConfig`'s JSON-Schema
+ * via the `definition` "MemorymapBoxStyle".
+ */
+export interface MemorymapBoxStyle extends MemorymapTextStyle {
+  fill?: string;
+  stroke?: string;
+  strokeWidth?: number;
+}
+/**
+ * This interface was referenced by `MermaidConfig`'s JSON-Schema
+ * via the `definition` "MemorymapTextStyle".
+ */
+export interface MemorymapTextStyle {
+  color?: string;
+  /**
+   * Unquoted, nonempty comma-separated font names.
+   */
+  fontFamily?: string;
+  fontSize?: number;
+  fontWeight?: ('normal' | 'bold') | (100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900);
+}
+/**
+ * This interface was referenced by `MermaidConfig`'s JSON-Schema
+ * via the `definition` "MemorymapSectionStyle".
+ */
+export interface MemorymapSectionStyle extends MemorymapBoxStyle {
+  /**
+   * Minimum height vertically or width horizontally, in diagram units.
+   */
+  minLength?: number;
 }
 /**
  * The object containing configurations specific for Venn diagrams.

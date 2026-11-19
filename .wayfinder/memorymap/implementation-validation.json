@@ -1,0 +1,96 @@
+{
+  "feature": "Native memory map diagrams",
+  "syntax": {
+    "keyword": "memorymap-beta",
+    "configurationNamespace": "config.memorymap",
+    "decision": "The user approved requiring the beta suffix to follow repository policy."
+  },
+  "checks": [
+    {
+      "command": "pnpm build",
+      "result": "passed",
+      "details": "Production bundles and generated declarations; build log checked for TypeScript errors."
+    },
+    {
+      "command": "pnpm exec tsc --noEmit -p packages/mermaid/tsconfig.json",
+      "result": "passed"
+    },
+    {
+      "command": "pnpm test:check:tsc",
+      "result": "passed",
+      "details": "Built-package consumer checks for mermaid, @mermaid-js/layout-elk, and @mermaid-js/parser."
+    },
+    {
+      "command": "pnpm test --maxWorkers=2",
+      "result": "passed",
+      "details": "ESLint, Jison lint, Prettier, and the complete Vitest suite.",
+      "testFilesPassed": 404,
+      "testFilesSkipped": 1,
+      "testsPassed": 8545,
+      "testsSkipped": 16,
+      "testsTodo": 2
+    },
+    {
+      "command": "MERMAID_PORT=9000 MERMAID_E2E_FIXTURE_TIER=pr-check pnpm e2e e2e/rendering/mmd-snapshots.spec.ts e2e/rendering/memorymap --grep memorymap --workers=2",
+      "result": "passed",
+      "testsPassed": 28,
+      "details": "Ten reviewed snapshot comparisons, sixteen geometry/embedding checks, and two generated-input scale checks. The explicit spec paths include the nightly scale cases."
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "visualReview": {
+    "reviewer": "Copilot",
+    "method": "Viewed the rendered PNGs against fixture sources and agreed layout behavior; this is not user visual approval.",
+    "fixtures": [
+      "boot-vertical",
+      "boot-horizontal",
+      "nested-vertical",
+      "nested-horizontal",
+      "configured-vertical",
+      "configured-horizontal",
+      "long-notes-vertical",
+      "long-notes-horizontal",
+      "dark-vertical",
+      "dark-horizontal"
+    ],
+    "browser": "Chromium 151.0.7922.34",
+    "platform": "Linux x64",
+    "viewport": { "width": 1440, "height": 1024 },
+    "deviceScaleFactor": 2,
+    "themes": ["default", "dark"],
+    "fonts": {
+      "snapshotRequestedFamily": "courier",
+      "snapshotSystemFallback": "Nimbus Mono PS",
+      "defaultRequestedFamily": "trebuchet ms",
+      "defaultSystemFallback": "Noto Sans"
+    },
+    "snapshotStorage": "Existing ignored local/CI screenshot baseline policy; PNGs were not force-added.",
+    "hostOverflow": "Verified host-owned overflow containers and complete intrinsic/responsive SVG bounds without internal scroll panels."
+  },
+  "scale": {
+    "sections": 1000,
+    "maximumDepth": 10,
+    "measurement": "Render-only elapsed time in the actual browser API, excluding viewer startup.",
+    "verticalMilliseconds": 119.6,
+    "horizontalMilliseconds": 116.7,
+    "assertions": [
+      "Finite complete painted bounds",
+      "Every section and expected text retained",
+      "Nested containment",
+      "Source ordering"
+    ],
+    "interpretation": "Observed timings on a shared host, not a performance threshold or supported-size ceiling."
+  },
+  "review": {
+    "method": "Read-only code-review agent over the complete implementation and shared integration changes.",
+    "result": "No substantive findings."
+  },
+  "limitations": [
+    "Entry labels are literal text; no memory address, capacity, range, or allocation calculations.",
+    "The host owns scrolling and zoom; export pagination and external font availability are outside diagram guarantees.",
+    "Existing Vite TypeScript TS5055 warnings remain; explicit source and consumer typechecks pass."
+  ]
+}

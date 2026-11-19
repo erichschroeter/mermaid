@@ -73,6 +73,9 @@ export interface DiagramDB {
    */
   readonly preserveCommentsWhenParsing?: boolean;
 
+  /** Skip legacy entity rewriting for grammars that parse literal strings. */
+  readonly preserveLiteralText?: boolean;
+
   /**
    * Receives the number of lines occupied by YAML frontmatter, which the parser
    * never sees. Diagrams that report source positions add this to their parser

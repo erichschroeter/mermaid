@@ -1,0 +1,11 @@
+memorymap-beta horizontal
+    accTitle: Horizontal developer notes
+    accDescr: Wrapped prose, explicit newlines, unbroken strings and literal markup.
+    group "Storage"
+        section "Reserved"
+            style "fill:#F4CCCC; min-length:80"
+            note "Keep this region available for future firmware. The bootloader and application must agree on every format change. A requested minimum length never truncates this note.\nReference: https://example.invalid/firmware/very-long-unbroken-reference-0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        section "<b>Literal</b> **not Markdown**"
+            note "No HTML, automatic links, or click actions. Quote: \"boot\". Path: C:\\firmware\\image.bin"
+            noteStyle "font-size:12px"
+        section "Unaffected neighbor"

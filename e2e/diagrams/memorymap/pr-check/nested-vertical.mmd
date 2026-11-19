@@ -1,0 +1,20 @@
+memorymap-beta vertical
+    accTitle: Nested storage
+    accDescr: Local lanes, parent notes, repeated entry labels, and blank sections.
+    group "Boot storage"
+        section "Firmware"
+            section "XLDR"
+                label "Bank A"
+                section "Copy 0"
+                    note "The name \"primary\" is literal text."
+                section "Copy 1"
+            section
+                note "Reserved. See https://example.invalid/boot for details."
+                noteStyle "font-size:12px"
+            label "Firmware area"
+            note "Parent notes can follow child declarations."
+            style "stroke:none"
+        note "A note belonging to the group."
+    group "Boot storage"
+        section
+        section ""

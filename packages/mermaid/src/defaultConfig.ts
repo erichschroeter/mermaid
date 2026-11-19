@@ -300,6 +300,35 @@ const config: RequiredDeep<MermaidConfig> = {
   usecase: {
     ...defaultConfigJson.usecase,
   },
+  memorymap: {
+    ...defaultConfigJson.memorymap,
+    useMaxWidth: false,
+    groupStyle: {
+      fill: 'none',
+      stroke: 'none',
+      strokeWidth: 1,
+      color: undefined,
+      fontFamily: undefined,
+      fontSize: undefined,
+      fontWeight: 'normal',
+    },
+    sectionStyle: {
+      fill: undefined,
+      stroke: undefined,
+      strokeWidth: 1,
+      minLength: 80,
+      color: undefined,
+      fontFamily: undefined,
+      fontSize: undefined,
+      fontWeight: 'normal',
+    },
+    noteStyle: {
+      color: undefined,
+      fontFamily: undefined,
+      fontSize: undefined,
+      fontWeight: 'normal',
+    },
+  },
   railroad: {
     ...defaultConfigJson.railroad,
     // Railroad colors and typography derive from the active theme unless explicitly overridden.

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Memory map | Mermaid Quick Test Page</title>
+    <style>
+      .viewport {
+        max-width: 900px;
+        max-height: 600px;
+        overflow: auto;
+        border: 1px solid #888;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Memory maps</h1>
+    <p>The host owns these scrollable viewports; each SVG contains the complete layout.</p>
+    <h2>Vertical boot storage</h2>
+    <div class="viewport">
+      <pre class="mermaid">
+memorymap-beta vertical
+  group "0x00000000"
+    section "XLDR\nCopy 0"
+      style "fill:#F4CCCC"
+    section "XLDR\nCopy 1"
+    section "XLDR\nCopy 2"
+    section "XLDR\nCopy 3"
+    note "Boot ROM requires four copies in the first four blocks."
+  group "0x00080000"
+    section "EBOOT"
+      note "256K reserved. Unused space is filled with 0xFF."
+  group "0x000C0000"
+    section "Splash Screen\nBitmap"
+      note "Must be a multiple of 128K and fit the largest splash screen."
+      </pre>
+    </div>
+    <h2>Horizontal nested storage</h2>
+    <div class="viewport">
+      <pre class="mermaid">
+memorymap-beta horizontal
+  group "Bank A"
+    section "Firmware"
+      section "Boot"
+      section "Application"
+      note "Parent notes do not move into child sections."
+    section
+      style "stroke:none; min-length:160"
+      note "Reserved blank section"
+  group "Bank B"
+    section "Backup"
+      </pre>
+    </div>
+    <script type="module">
+      import mermaid from './mermaid.esm.mjs';
+      mermaid.initialize({ startOnLoad: true });
+    </script>
+  </body>
+</html>

@@ -89,6 +89,14 @@ const DIAGRAMS: Record<string, string> = {
     0-15: "Source Port"
     16-31: "Destination Port"`,
 
+  memorymap: `memorymap-beta
+    accTitle: Storage
+    accDescr: Nested memory sections
+    group "Boot"
+      section "Firmware"
+        section "Loader"
+        note "Reserved"`,
+
   radar: `---
 title: "Grades"
 ---
