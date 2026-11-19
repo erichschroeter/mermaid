@@ -14,6 +14,9 @@ A top-level collection of one or more dedicated sections, identified by a requir
 A dedicated section within a group or another section, such as a bootloader copy, reserved area, or bitmap storage. Its extent is not implied by an entry label.
 _Avoid_: Separator (a separator marks a boundary between sections).
 
+**Section length**:
+The drawn extent of a section along the map's growth direction: height in a vertical map and width in a horizontal map. It describes diagram geometry, not memory capacity.
+
 **Entry label**:
 Literal text identifying a group or optionally a section at any depth, such as `0x00000000`, `Boot area`, or `Bank A`. A numeric-looking label does not imply an address value, size, or boundary.
 _Avoid_: Address entry (entry labels need not be addresses).

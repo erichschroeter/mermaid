@@ -28,6 +28,16 @@ numeric-looking labels do not imply ranges, sizing, sorting, or overlap
 validation. Cover missing required group structure and malformed nesting using
 the agreed syntax diagnostics.
 
+Derive layout checks from
+[Choose layout and sizing in both orientations](02-layout-and-sizing.md):
+transposed local lanes with upright text, wrapping without overlap or automatic
+shrinking, content exceeding requested section lengths, parents containing their
+children, trailing parent padding, omitted empty parent-text headers, borderless
+sections retaining geometry, and per-note font-size customization. Include long
+unbroken text and nesting that requires additional space. External-reference
+checks depend on the syntax and interaction decision, not an assumed link
+capability.
+
 Determine whether any remaining choice prevents implementation without
 guesswork. Surface that choice as a new decision ticket rather than using this
 ticket to deliver the implementation or duplicate earlier resolutions. The

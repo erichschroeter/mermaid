@@ -18,8 +18,7 @@ section styling, and wrapping notes. No diagram implementation is included.
 - [Boot memory map proposal](examples/boot-memory-map.mmd) is the user-supplied
   acceptance scenario, not an accepted grammar or configuration schema.
   Its syntax and percentage-based widths are proposals.
-- Viewport ownership, section sizing,
-  configuration shape, and exact syntax remain open.
+- Viewport ownership, configuration shape, and exact syntax remain open.
 - Consult the `wayfinder`, `grilling`, and `domain-modeling` skills each session.
   All initial tickets are human-in-the-loop conversations.
 - Use the [memory map glossary](../../GLOSSARY.md) for confirmed terminology.
@@ -55,12 +54,14 @@ section styling, and wrapping notes. No diagram implementation is included.
 - [Define addresses and dedicated memory sections](tickets/01-addresses-and-sections.md):
   literal labels identify source-ordered groups and recursively nested sections;
   labels imply no numeric ranges or sizes.
+- [Choose layout and sizing in both orientations](tickets/02-layout-and-sizing.md):
+  transposed local lanes and nested boxes use content-driven sizing; explicit
+  lengths are minimums, and wrapped notes may grow sections.
 
 ## Not yet specified
 
-- Further constraints or trade-offs exposed by combining nested dedicated sections,
-  the eventual sizing model, and long annotations. Specific follow-on questions
-  cannot yet be distinguished from concerns the initial decisions will settle.
+No additional in-scope fog is currently identified beyond the questions in
+existing child tickets. Revisit as those decisions expose further constraints.
 
 ## Out of scope
 
@@ -68,4 +69,5 @@ section styling, and wrapping notes. No diagram implementation is included.
   documentation changes: this effort ends at an agreed specification.
 - Runtime allocations, ownership tracking, and changing memory contents:
   this effort documents static memory layouts.
-- Treating the proposed syntax or percentage widths as already approved.
+- Treating the proposed syntax, exact configuration keys, or example percentage
+  values as already approved.

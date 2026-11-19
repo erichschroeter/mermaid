@@ -26,6 +26,9 @@ without silently accepting accidental empty declarations. Repeated labels and
 nonnumeric labels are valid; missing numeric ranges are not errors.
 Define explicit group-level and section-level note attachment, including
 parents that have both their own content and children.
+Decide whether external references in notes remain literal text or support
+links; if links are supported, specify their source form and intended
+interaction without assuming an interactive renderer or host.
 Use current Mermaid parser guidance and shared conventions; do not implement
 the parser. Coordinate configuration names with
 [Define styling, notes, and configuration](05-styling-notes-and-configuration.md)
